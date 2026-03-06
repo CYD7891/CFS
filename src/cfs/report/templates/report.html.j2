@@ -1,0 +1,171 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>{{ ctx.title }}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <style>
+      body {
+        font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+        margin: 24px;
+        color: #1f2937;
+      }
+      h1, h2, h3 { margin-top: 28px; }
+      code {
+        background: #f3f4f6;
+        padding: 2px 6px;
+        border-radius: 6px;
+      }
+      .box {
+        border: 1px solid #d1d5db;
+        border-radius: 12px;
+        padding: 14px 18px;
+        margin-bottom: 20px;
+        background: #fafafa;
+      }
+      .table-wrap {
+        overflow-x: auto;
+        margin-bottom: 24px;
+      }
+      table {
+        border-collapse: collapse;
+        width: 100%;
+        min-width: 1100px;
+        margin-top: 12px;
+        font-size: 14px;
+      }
+      th, td {
+        border: 1px solid #d1d5db;
+        padding: 8px 10px;
+        text-align: left;
+        vertical-align: top;
+      }
+      th {
+        background: #f3f4f6;
+      }
+      ul {
+        line-height: 1.6;
+      }
+      .muted {
+        color: #6b7280;
+      }
+      .error-box {
+        border: 1px solid #f5c2c7;
+        background: #fff5f5;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>{{ ctx.title }}</h1>
+
+    <div class="box">
+      <p><b>Project Summary</b></p>
+      <ul>
+        <li>Inputs file: <code>{{ ctx.inputs_csv }}</code></li>
+        <li>Results file: <code>{{ ctx.results_csv }}</code></li>
+        <li>Total input cases: <b>{{ ctx.input_rows|length }}</b></li>
+        <li>Successful cases: <b>{{ ctx.ok_count }}</b></li>
+        <li>Error cases: <b>{{ ctx.error_count }}</b></li>
+      </ul>
+      <p class="muted">
+        This report documents the current run of Compressible Flow Studio.
+      </p>
+    </div>
+
+    <h2>Assumptions</h2>
+    <ul>
+      {% for a in ctx.assumptions %}
+      <li>{{ a }}</li>
+      {% endfor %}
+    </ul>
+
+    <h2>Failure modes / limitations</h2>
+    <ul>
+      {% for f in ctx.failure_modes %}
+      <li>{{ f }}</li>
+      {% endfor %}
+    </ul>
+
+    <h2>Input Cases</h2>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            {% for key in ctx.input_columns %}
+            <th>{{ key }}</th>
+            {% endfor %}
+          </tr>
+        </thead>
+        <tbody>
+          {% for row in ctx.input_rows %}
+          <tr>
+            {% for key in ctx.input_columns %}
+            <td>{{ row[key] }}</td>
+            {% endfor %}
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+
+    <h2>Computed Results</h2>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            {% for key in ctx.result_columns %}
+            <th>{{ key }}</th>
+            {% endfor %}
+          </tr>
+        </thead>
+        <tbody>
+          {% for row in ctx.result_rows %}
+          <tr>
+            {% for key in ctx.result_columns %}
+            <td>{{ row[key] }}</td>
+            {% endfor %}
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+
+    <h2>Figures</h2>
+    <div class="box">
+      <h3>Isentropic Area Ratio Curve</h3>
+      <p class="muted">
+        The curve shows A/A* as a function of Mach number for gamma = 1.4.
+        The demo point marks the isentropic sample case at M = 2.
+      </p>
+      <img
+        src="{{ ctx.figure_paths['isentropic_area_ratio'] }}"
+        alt="Isentropic area ratio curve"
+        style="max-width: 100%; height: auto; border: 1px solid #d1d5db; border-radius: 8px;"
+      />
+    </div>
+
+    <h2>Error Summary</h2>
+    {% if ctx.error_rows %}
+    <div class="box error-box">
+      <p><b>The following cases failed validation or computation:</b></p>
+      <ul>
+        {% for row in ctx.error_rows %}
+        <li>
+          <code>{{ row["case_id"] }}</code> ({{ row["model"] }}):
+          {{ row["note"] }}
+        </li>
+        {% endfor %}
+      </ul>
+    </div>
+    {% else %}
+    <p class="muted">No error cases were recorded in this run.</p>
+    {% endif %}
+
+    <h2>Conclusions</h2>
+    <ul>
+      {% for c in ctx.conclusions %}
+      <li>{{ c }}</li>
+      {% endfor %}
+    </ul>
+  </body>
+</html>

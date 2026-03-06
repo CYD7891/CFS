@@ -1,0 +1,4 @@
+case_id,model,gamma,M,M1,theta_deg,branch
+iso_1,isentropic,1.4,2.0,,,
+ns_1,normal_shock,1.4,,2.0,,
+os_1,oblique_shock,1.4,,3.0,15,weak

@@ -1,0 +1,6 @@
+case_id,model,gamma,M,M1,theta_deg,branch
+good_iso,isentropic,1.4,2.0,,,
+bad_ns,normal_shock,1.4,,0.8,,
+bad_os,oblique_shock,1.4,,2.0,40,weak
+bad_model,banana,1.4,2.0,,,
+missing_m1,normal_shock,1.4,,,,

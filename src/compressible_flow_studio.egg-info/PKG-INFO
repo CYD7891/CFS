@@ -1,0 +1,67 @@
+Metadata-Version: 2.4
+Name: compressible-flow-studio
+Version: 0.1.0
+Summary: Reliable compressible-flow calculator + batch runner + auto report
+Requires-Python: >=3.10
+Description-Content-Type: text/markdown
+Requires-Dist: typer>=0.12
+Requires-Dist: rich>=13.7
+Requires-Dist: pandas>=2.0
+Requires-Dist: pint>=0.23
+Requires-Dist: jinja2>=3.1
+Requires-Dist: matplotlib>=3.8
+Provides-Extra: dev
+Requires-Dist: pytest>=8.0; extra == "dev"
+Requires-Dist: ruff>=0.4; extra == "dev"
+Provides-Extra: pdf
+Requires-Dist: weasyprint>=61; extra == "pdf"
+
+# Compressible Flow Studio (CFS)
+
+Reliable compressible-flow calculator for isentropic flow, normal shocks, and oblique shocks — with batch CSV input, automated HTML reporting, optional PDF export, and test-backed engineering validation.
+
+## Why this project
+Compressible-flow formulas are easy to find, but reliable engineering tools are harder to build well.
+
+This project focuses on turning standard gas-dynamics relations into a more professional workflow:
+- batch case execution from CSV
+- validation-aware computation
+- graceful handling of bad cases
+- automated report generation
+- reproducible tests and CI
+
+Instead of being just a collection of formulas, CFS is designed as a small engineering toolchain.
+
+## Current capabilities
+- Isentropic flow
+  - `T/T0`
+  - `P/P0`
+  - `rho/rho0`
+  - `A/A*`
+  - inverse `A/A* -> M` for subsonic and supersonic branches
+- Normal shock
+  - `M2`
+  - `p2/p1`
+  - `rho2/rho1`
+  - `T2/T1`
+  - `p02/p01`
+- Oblique shock
+  - weak / strong branch
+  - shock angle `beta`
+  - `Mn1`, `Mn2`, `M2`
+  - `p2/p1`, `rho2/rho1`, `T2/T1`, `p02/p01`
+  - attached-shock validity check through `theta_max`
+- Batch runner from CSV
+- HTML report generation
+- Optional PDF generation with graceful fallback
+- Error summary for failed cases
+- pytest test suite
+- GitHub Actions CI
+
+## Quickstart
+
+### 1. Create a virtual environment
+Windows PowerShell:
+```powershell
+py -m venv .venv
+.\.venv\Scripts\Activate.ps1
