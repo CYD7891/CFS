@@ -1,4 +1,0 @@
-case_id,model,status,note,branch,T_T0,P_P0,rho_rho0,A_Astar,M2,p2_p1,rho2_rho1,T2_T1,p02_p01,beta_deg,Mn1,Mn2
-iso_1,isentropic,OK,Real isentropic calculation,,0.555555555556,0.127804525463,0.230048145833,1.687500000000,,,,,,,,
-ns_1,normal_shock,OK,Real normal shock calculation,,,,,,0.577350269190,4.500000000000,2.666666666667,1.687500000000,0.720873861485,,,
-os_1,oblique_shock,OK,Real oblique shock calculation,weak,,,,,2.254902312267,2.821562321275,2.032448819685,1.388257501959,0.895044329830,32.240400182731,1.600418424201,0.668311462099
