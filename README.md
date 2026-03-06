@@ -1,6 +1,30 @@
 # Compressible Flow Studio (CFS)
 
+![Python](https://img.shields.io/badge/Python-3.10%2B-blue)
+![Tests](https://img.shields.io/badge/tests-pytest-green)
+![CI](https://img.shields.io/badge/CI-GitHub_Actions-success)
+![Status](https://img.shields.io/badge/status-active-brightgreen)
+
+![CFS report preview](docs/report_preview.png)
+![CFS report preview](docs/report_preview2.png)
+
 Reliable compressible-flow calculator for isentropic flow, normal shocks, and oblique shocks — with batch CSV input, automated HTML reporting, optional PDF export, and test-backed engineering validation.
+
+## Contents
+- [Why this project](#why-this-project)
+- [Current capabilities](#current-capabilities)
+- [Quickstart](#quickstart)
+- [Example input format](#example-input-format)
+- [Outputs](#outputs)
+- [Example workflow](#example-workflow)
+- [Engineering assumptions](#engineering-assumptions)
+- [Known limitations / failure modes](#known-limitations--failure-modes)
+- [Reliability features](#reliability-features)
+- [Verification philosophy](#verification-philosophy)
+- [Repository structure](#repository-structure)
+- [Development roadmap](#development-roadmap)
+- [Why this is a good portfolio project](#why-this-is-a-good-portfolio-project)
+- [License](#license)
 
 ## Why this project
 Compressible-flow formulas are easy to find, but reliable engineering tools are harder to build well.
@@ -70,7 +94,18 @@ python -m cfs demo --out build/demo
 python -m cfs run examples/inputs_demo.csv --out build/run1
 ```
 
-### 5. Run tests
+### 5. Attempt PDF generation
+```bash
+python -m cfs demo --out build/demo --pdf
+```
+
+### 6. open the generated report
+Open:
+```bash
+build/demo/report.html
+```
+
+### 7. Run tests
 ```bash
 pytest -q
 ```
@@ -88,11 +123,16 @@ os_1,oblique_shock,1.4,,3.0,15,weak
 
 ## Outputs
 
-Each run produces:
-- `results.csv`
-- `report.html`
+A typical run generates:
+- `results.csv` with model-by-model computed quantities
+- `report.html` with assumptions, limitations, tables, plots, and conclusions
 - `assets/isentropic_area_ratio.png`
-- _optional_ `report.pdf` if PDF dependencies are available
+- optional `report.pdf` when PDF dependencies are available
+
+The report also includes:
+- successful case counts
+- error case counts
+- per-case error summaries for invalid inputs
 
 ## Example workflow
 
@@ -106,29 +146,38 @@ Then open:
 ## Engineering assumptions
 
 CFS currently assumes:
-- ideal gas
-- calorically perfect gas (gamma = constant)
+
+- ideal gas behavior
+- calorically perfect gas (`gamma` is constant)
 - steady, inviscid, adiabatic flow
-- 1D relations for isentropic flow and normal shocks
-- 2D attached oblique-shock model for wedge deflection cases
+- quasi-1D relations for isentropic flow
+- 1D normal-shock relations
+- 2D attached oblique-shock modeling for wedge-type deflection cases
+
+These assumptions are appropriate for many textbook and introductory engineering compressible-flow calculations, but they are not universal.
 
 ## Known limitations / failure modes
 
-This tool does not currently model:
+CFS does **not** currently model:
+
 - real-gas effects
-- variable-gamma effects
-- chemistry / dissociation / ionization
+- variable-`gamma` thermodynamics
+- high-temperature chemistry, dissociation, or ionization
 - shock-boundary-layer interaction
 - detached bow shocks beyond attached oblique-shock limits
 - viscous duct effects such as Fanno flow
 - heat-addition effects such as Rayleigh flow
 
-Numerically sensitive regions:
-- M → 1
-- invalid shock inputs such as M₁ ≤ 1 for normal shock
-- oblique-shock cases where theta > theta_max(M1, gamma)
+Important numerical or physical rejection cases include:
 
-These cases are either rejected or marked as ERROR in batch output.
+- `M <= 0` for isentropic relations
+- `M1 <= 1` for normal-shock calculations
+- oblique-shock cases with `theta > theta_max(M1, gamma)`
+- missing required CSV fields
+- invalid numeric inputs
+- unsupported model names
+
+In batch runs, these cases are not allowed to crash the whole job. They are recorded as `ERROR` rows in the output instead.
 
 ## Reliability features
 
