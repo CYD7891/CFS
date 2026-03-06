@@ -10,12 +10,17 @@
         margin: 24px;
         color: #1f2937;
       }
-      h1, h2, h3 { margin-top: 28px; }
+
+      h1, h2, h3 {
+        margin-top: 28px;
+      }
+
       code {
         background: #f3f4f6;
         padding: 2px 6px;
         border-radius: 6px;
       }
+
       .box {
         border: 1px solid #d1d5db;
         border-radius: 12px;
@@ -23,39 +28,123 @@
         margin-bottom: 20px;
         background: #fafafa;
       }
+
       .table-wrap {
         overflow-x: auto;
         margin-bottom: 24px;
       }
+
       table {
         border-collapse: collapse;
         width: 100%;
         min-width: 1100px;
         margin-top: 12px;
+        margin-bottom: 24px;
         font-size: 14px;
       }
+
       th, td {
         border: 1px solid #d1d5db;
         padding: 8px 10px;
         text-align: left;
         vertical-align: top;
       }
+
       th {
         background: #f3f4f6;
       }
+
       ul {
         line-height: 1.6;
       }
+
       .muted {
         color: #6b7280;
       }
+
       .error-box {
         border: 1px solid #f5c2c7;
         background: #fff5f5;
       }
+
+      .section-note {
+        margin-top: -8px;
+        margin-bottom: 10px;
+      }
+
+      @page {
+        size: A4 landscape;
+        margin: 12mm;
+      }
+
+      @media print {
+        body {
+          margin: 0;
+          font-size: 10px;
+          color: #000;
+        }
+
+        .table-wrap {
+          overflow: visible;
+        }
+
+        table {
+          min-width: 0;
+          width: 100%;
+          font-size: 9px;
+          table-layout: fixed;
+        }
+
+        th, td {
+          padding: 4px 6px;
+          white-space: normal;
+          word-break: break-word;
+          overflow-wrap: anywhere;
+        }
+
+        thead {
+          display: table-header-group;
+        }
+
+        tfoot {
+          display: table-footer-group;
+        }
+
+        tr, td, th {
+          page-break-inside: avoid;
+          break-inside: avoid;
+        }
+
+        h2, h3 {
+          page-break-after: avoid;
+        }
+
+        .box {
+          break-inside: avoid;
+        }
+
+        img {
+          max-width: 100%;
+          height: auto;
+        }
+      }
     </style>
   </head>
   <body>
+    {% set iso_rows = [] %}
+    {% set ns_rows = [] %}
+    {% set os_rows = [] %}
+
+    {% for row in ctx.result_rows %}
+      {% if row["model"] == "isentropic" %}
+        {% set _ = iso_rows.append(row) %}
+      {% elif row["model"] == "normal_shock" %}
+        {% set _ = ns_rows.append(row) %}
+      {% elif row["model"] == "oblique_shock" %}
+        {% set _ = os_rows.append(row) %}
+      {% endif %}
+    {% endfor %}
+
     <h1>{{ ctx.title }}</h1>
 
     <div class="box">
@@ -79,7 +168,7 @@
       {% endfor %}
     </ul>
 
-    <h2>Failure modes / limitations</h2>
+    <h2>Failure Modes / Limitations</h2>
     <ul>
       {% for f in ctx.failure_modes %}
       <li>{{ f }}</li>
@@ -109,23 +198,129 @@
     </div>
 
     <h2>Computed Results</h2>
+
+    <h3>Isentropic Results</h3>
+    <p class="muted section-note">
+      Key outputs for isentropic relations.
+    </p>
     <div class="table-wrap">
       <table>
         <thead>
           <tr>
-            {% for key in ctx.result_columns %}
-            <th>{{ key }}</th>
-            {% endfor %}
+            <th>case_id</th>
+            <th>status</th>
+            <th>note</th>
+            <th>T_T0</th>
+            <th>P_P0</th>
+            <th>rho_rho0</th>
+            <th>A_Astar</th>
           </tr>
         </thead>
         <tbody>
-          {% for row in ctx.result_rows %}
+          {% for row in iso_rows %}
           <tr>
-            {% for key in ctx.result_columns %}
-            <td>{{ row[key] }}</td>
-            {% endfor %}
+            <td>{{ row["case_id"] }}</td>
+            <td>{{ row["status"] }}</td>
+            <td>{{ row["note"] }}</td>
+            <td>{{ row["T_T0"] }}</td>
+            <td>{{ row["P_P0"] }}</td>
+            <td>{{ row["rho_rho0"] }}</td>
+            <td>{{ row["A_Astar"] }}</td>
           </tr>
           {% endfor %}
+          {% if not iso_rows %}
+          <tr>
+            <td colspan="7" class="muted">No isentropic results in this run.</td>
+          </tr>
+          {% endif %}
+        </tbody>
+      </table>
+    </div>
+
+    <h3>Normal Shock Results</h3>
+    <p class="muted section-note">
+      Downstream state and total-pressure loss across a normal shock.
+    </p>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>case_id</th>
+            <th>status</th>
+            <th>note</th>
+            <th>M2</th>
+            <th>p2_p1</th>
+            <th>rho2_rho1</th>
+            <th>T2_T1</th>
+            <th>p02_p01</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for row in ns_rows %}
+          <tr>
+            <td>{{ row["case_id"] }}</td>
+            <td>{{ row["status"] }}</td>
+            <td>{{ row["note"] }}</td>
+            <td>{{ row["M2"] }}</td>
+            <td>{{ row["p2_p1"] }}</td>
+            <td>{{ row["rho2_rho1"] }}</td>
+            <td>{{ row["T2_T1"] }}</td>
+            <td>{{ row["p02_p01"] }}</td>
+          </tr>
+          {% endfor %}
+          {% if not ns_rows %}
+          <tr>
+            <td colspan="8" class="muted">No normal shock results in this run.</td>
+          </tr>
+          {% endif %}
+        </tbody>
+      </table>
+    </div>
+
+    <h3>Oblique Shock Results</h3>
+    <p class="muted section-note">
+      Weak/strong branch results, shock angle, normal components, and downstream state.
+    </p>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>case_id</th>
+            <th>status</th>
+            <th>branch</th>
+            <th>note</th>
+            <th>beta_deg</th>
+            <th>Mn1</th>
+            <th>Mn2</th>
+            <th>M2</th>
+            <th>p2_p1</th>
+            <th>rho2_rho1</th>
+            <th>T2_T1</th>
+            <th>p02_p01</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for row in os_rows %}
+          <tr>
+            <td>{{ row["case_id"] }}</td>
+            <td>{{ row["status"] }}</td>
+            <td>{{ row["branch"] }}</td>
+            <td>{{ row["note"] }}</td>
+            <td>{{ row["beta_deg"] }}</td>
+            <td>{{ row["Mn1"] }}</td>
+            <td>{{ row["Mn2"] }}</td>
+            <td>{{ row["M2"] }}</td>
+            <td>{{ row["p2_p1"] }}</td>
+            <td>{{ row["rho2_rho1"] }}</td>
+            <td>{{ row["T2_T1"] }}</td>
+            <td>{{ row["p02_p01"] }}</td>
+          </tr>
+          {% endfor %}
+          {% if not os_rows %}
+          <tr>
+            <td colspan="12" class="muted">No oblique shock results in this run.</td>
+          </tr>
+          {% endif %}
         </tbody>
       </table>
     </div>

@@ -10,12 +10,17 @@
         margin: 24px;
         color: #1f2937;
       }
-      h1, h2, h3 { margin-top: 28px; }
+
+      h1, h2, h3 {
+        margin-top: 28px;
+      }
+
       code {
         background: #f3f4f6;
         padding: 2px 6px;
         border-radius: 6px;
       }
+
       .box {
         border: 1px solid #d1d5db;
         border-radius: 12px;
@@ -23,39 +28,127 @@
         margin-bottom: 20px;
         background: #fafafa;
       }
+
       .table-wrap {
         overflow-x: auto;
         margin-bottom: 24px;
       }
+
       table {
         border-collapse: collapse;
         width: 100%;
         min-width: 1100px;
         margin-top: 12px;
+        margin-bottom: 24px;
         font-size: 14px;
       }
+
       th, td {
         border: 1px solid #d1d5db;
         padding: 8px 10px;
         text-align: left;
         vertical-align: top;
       }
+
       th {
         background: #f3f4f6;
       }
+
       ul {
         line-height: 1.6;
       }
+
       .muted {
         color: #6b7280;
       }
+
       .error-box {
         border: 1px solid #f5c2c7;
         background: #fff5f5;
       }
+
+      .section-note {
+        margin-top: -8px;
+        margin-bottom: 10px;
+      }
+
+      @page {
+        size: A4 landscape;
+        margin: 12mm;
+      }
+
+      @media print {
+        body {
+          margin: 0;
+          font-size: 10px;
+          color: #000;
+        }
+
+        .table-wrap {
+          overflow: visible;
+        }
+
+        table {
+          min-width: 0;
+          width: 100%;
+          font-size: 9px;
+          table-layout: fixed;
+        }
+
+        th, td {
+          padding: 4px 6px;
+          white-space: normal;
+          word-break: break-word;
+          overflow-wrap: anywhere;
+        }
+
+        thead {
+          display: table-header-group;
+        }
+
+        tfoot {
+          display: table-footer-group;
+        }
+
+        tr, td, th {
+          page-break-inside: avoid;
+          break-inside: avoid;
+        }
+
+        h2, h3 {
+          page-break-after: avoid;
+        }
+
+        .box {
+          break-inside: avoid;
+        }
+
+        img {
+          max-width: 100%;
+          height: auto;
+        }
+      }
     </style>
   </head>
   <body>
+    
+    
+    
+
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+
     <h1>Compressible Flow Studio — Demo Report</h1>
 
     <div class="box">
@@ -83,7 +176,7 @@
       
     </ul>
 
-    <h2>Failure modes / limitations</h2>
+    <h2>Failure Modes / Limitations</h2>
     <ul>
       
       <li>No real-gas / variable-gamma / chemistry / high-temperature effects</li>
@@ -179,162 +272,116 @@
     </div>
 
     <h2>Computed Results</h2>
+
+    <h3>Isentropic Results</h3>
+    <p class="muted section-note">
+      Key outputs for isentropic relations.
+    </p>
     <div class="table-wrap">
       <table>
         <thead>
           <tr>
-            
             <th>case_id</th>
-            
-            <th>model</th>
-            
             <th>status</th>
-            
             <th>note</th>
-            
-            <th>branch</th>
-            
             <th>T_T0</th>
-            
             <th>P_P0</th>
-            
             <th>rho_rho0</th>
-            
             <th>A_Astar</th>
-            
-            <th>M2</th>
-            
-            <th>p2_p1</th>
-            
-            <th>rho2_rho1</th>
-            
-            <th>T2_T1</th>
-            
-            <th>p02_p01</th>
-            
-            <th>beta_deg</th>
-            
-            <th>Mn1</th>
-            
-            <th>Mn2</th>
-            
           </tr>
         </thead>
         <tbody>
           
           <tr>
-            
             <td>iso_1</td>
-            
-            <td>isentropic</td>
-            
             <td>OK</td>
-            
             <td>Real isentropic calculation</td>
-            
-            <td></td>
-            
             <td>0.555555555556</td>
-            
             <td>0.127804525463</td>
-            
             <td>0.230048145833</td>
-            
             <td>1.687500000000</td>
-            
-            <td></td>
-            
-            <td></td>
-            
-            <td></td>
-            
-            <td></td>
-            
-            <td></td>
-            
-            <td></td>
-            
-            <td></td>
-            
-            <td></td>
-            
           </tr>
           
+          
+        </tbody>
+      </table>
+    </div>
+
+    <h3>Normal Shock Results</h3>
+    <p class="muted section-note">
+      Downstream state and total-pressure loss across a normal shock.
+    </p>
+    <div class="table-wrap">
+      <table>
+        <thead>
           <tr>
-            
+            <th>case_id</th>
+            <th>status</th>
+            <th>note</th>
+            <th>M2</th>
+            <th>p2_p1</th>
+            <th>rho2_rho1</th>
+            <th>T2_T1</th>
+            <th>p02_p01</th>
+          </tr>
+        </thead>
+        <tbody>
+          
+          <tr>
             <td>ns_1</td>
-            
-            <td>normal_shock</td>
-            
             <td>OK</td>
-            
             <td>Real normal shock calculation</td>
-            
-            <td></td>
-            
-            <td></td>
-            
-            <td></td>
-            
-            <td></td>
-            
-            <td></td>
-            
             <td>0.577350269190</td>
-            
             <td>4.500000000000</td>
-            
             <td>2.666666666667</td>
-            
             <td>1.687500000000</td>
-            
             <td>0.720873861485</td>
-            
-            <td></td>
-            
-            <td></td>
-            
-            <td></td>
-            
           </tr>
           
+          
+        </tbody>
+      </table>
+    </div>
+
+    <h3>Oblique Shock Results</h3>
+    <p class="muted section-note">
+      Weak/strong branch results, shock angle, normal components, and downstream state.
+    </p>
+    <div class="table-wrap">
+      <table>
+        <thead>
           <tr>
-            
-            <td>os_1</td>
-            
-            <td>oblique_shock</td>
-            
-            <td>OK</td>
-            
-            <td>Real oblique shock calculation</td>
-            
-            <td>weak</td>
-            
-            <td></td>
-            
-            <td></td>
-            
-            <td></td>
-            
-            <td></td>
-            
-            <td>2.254902312267</td>
-            
-            <td>2.821562321275</td>
-            
-            <td>2.032448819685</td>
-            
-            <td>1.388257501959</td>
-            
-            <td>0.895044329830</td>
-            
-            <td>32.240400182731</td>
-            
-            <td>1.600418424201</td>
-            
-            <td>0.668311462099</td>
-            
+            <th>case_id</th>
+            <th>status</th>
+            <th>branch</th>
+            <th>note</th>
+            <th>beta_deg</th>
+            <th>Mn1</th>
+            <th>Mn2</th>
+            <th>M2</th>
+            <th>p2_p1</th>
+            <th>rho2_rho1</th>
+            <th>T2_T1</th>
+            <th>p02_p01</th>
           </tr>
+        </thead>
+        <tbody>
+          
+          <tr>
+            <td>os_1</td>
+            <td>OK</td>
+            <td>weak</td>
+            <td>Real oblique shock calculation</td>
+            <td>32.240400182731</td>
+            <td>1.600418424201</td>
+            <td>0.668311462099</td>
+            <td>2.254902312267</td>
+            <td>2.821562321275</td>
+            <td>2.032448819685</td>
+            <td>1.388257501959</td>
+            <td>0.895044329830</td>
+          </tr>
+          
           
         </tbody>
       </table>
