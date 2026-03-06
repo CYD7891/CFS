@@ -185,3 +185,6 @@ This project demonstrates:
 - test-driven engineering workflow
 - report automation
 - error handling and reliability thinking
+
+## License
+This project is licensed under the MIT License. See the `LICENSE` file for details.
